@@ -1,0 +1,86 @@
+.date-picker-year{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    &__header{
+        text-align: center;
+        border-bottom: 1px solid #DBE0E9;
+        padding: 10px 0;
+        .header{
+            &__date-range{
+                width: 300px;
+            }
+        }
+    }
+
+    &__body{
+        padding: 10px 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        .body{
+            &__header{
+                display: flex;
+                justify-content: center;
+                .header{
+                    &__item{
+                        margin: 0 20px;
+                        .item{
+                            &__date{
+                                display: inline-block;
+                                width: 58px;
+                                text-align: center;
+                                margin: 0 10px;
+                                font-size: 12px;
+                            }
+                            &__btn{
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+            }
+            &__year-wrap{
+                display: flex;
+                flex-wrap: wrap;
+                .year-wrap{
+                    &__item{
+                        width: (100% / 2);
+                        text-align: center;
+                        height: 40px;
+                        line-height: 40px;
+                        border-radius: 2px;                        
+                        cursor: pointer;
+                    }
+                    &__item-chosen{
+                        background: #59B75B;
+                        color: #fff;
+                    }
+                    &__item-unchooseable{
+                        color: #aaa;
+                        cursor: context-menu;
+                    }
+                }
+            }
+        }
+    }
+
+    .year-wrap__item{
+        &:hover{
+            background: #DFF1DF;
+            color: #333;
+        }
+    }
+    .year-wrap__item-chosen{
+        &:hover{
+            background: #59B75B;
+            color: #fff;
+        }
+    }
+    .year-wrap__item-unchooseable{
+        &:hover{
+            background: none;
+            color: #aaa;
+        }
+    }
+}

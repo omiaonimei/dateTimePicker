@@ -1,0 +1,54 @@
+<div class="date-picker-box"
+     :style="style">
+    <div class="date-picker-box__input-box"
+         @click="showDateTable = !showDateTable">
+            <input type="text" 
+                   class="input-box__value"
+                   v-model="dateText"
+                   :placeholder="placeholder"
+                   :readonly="readonly">
+            <img src="img/clear-input.png" 
+                 class="input-box__clear-icon"
+                 v-if="dateText.length > 0"
+                 @click="dateText = ''">
+            <img src="img/datepicker-icon-date.png"
+                 class="input-box__drop-down-icon" >
+    </div>
+    <div class="date-picker-box__valide-fail" v-show="!validResult">{{validMessage || ''}}</div>
+    
+    <div class="date-picker-box__wrap" 
+         v-show="showDateTable" :style="styleObj">
+        <div class="wrap__date-container">
+            <ul class="date-container__left">
+                <li class="left__item" 
+                    v-for="item in datePickerTypeList"
+                    :class="{'left__item-choose': item.selected}"
+                    @click="chooseDatePickerType($index)">
+                    <span>{{item.name}}</span>
+                </li>
+            </ul>
+            <div class="date-container__right">
+                <day v-show="datePickerType === 1 && datePickType.includes('D')" 
+                     v-ref:date-picker-day
+                     :is-date-range="isDateRange"
+                     :max-date="maxDate"
+                     :min-date="minDate"
+                     :has-time-picker="hasTimePicker"
+                     :value="value"></day>
+                     
+                <week v-show="datePickerType === 2 && datePickType.includes('W')" 
+                      v-ref:date-picker-week></week>
+                <month v-show="datePickerType === 3 && datePickType.includes('M')" 
+                       v-ref:date-picker-month></month>
+                <quarter v-show="datePickerType === 4 && datePickType.includes('Q')" 
+                         v-ref:date-picker-quarter></quarter>
+                <year v-show="datePickerType === 5 && datePickType.includes('Y')" 
+                      v-ref:date-picker-year></year>
+            </div>
+        </div>
+        <div class="wrap__btn">
+            <div class="btn__reset btn__item" @click="reset">重置</div>
+            <div class="btn__submit btn__item" @click="submit">确认</div>
+        </div>
+    </div>
+</div>

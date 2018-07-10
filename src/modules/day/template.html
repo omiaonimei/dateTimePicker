@@ -1,0 +1,125 @@
+<div class="date-picker-day">
+    <!-- 时间范围 不含时分秒-->
+    <div class="date-picker-day__header" v-show="isDateRange && !hasTimePicker">
+        <input type="text" 
+               placeholder="开始日期" 
+               class="header__begin-date" 
+               v-model="beginDate">
+        &nbsp;至&nbsp;
+        <input type="text" 
+               placeholder="结束日期" 
+               class="header__end-date" 
+               v-model="endDate">
+    </div>
+
+    <!-- 时间范围 含时分秒-->
+    <div class="date-picker-day__header" v-show="isDateRange && hasTimePicker">
+        <input type="text" 
+               placeholder="开始日期" 
+               class="header__range-date" 
+               v-model="beginDate"
+               @focus="hideTimePickerBox">
+        <input type="text"
+               placeholder="选择time" 
+               class="header__range-date-time" 
+               v-model="beginDateTime"
+               @click="showTimePickerbox('begin')">
+        至
+        <input type="text" 
+               placeholder="结束日期" 
+               class="header__range-date" 
+               v-model="endDate"
+               @focus="hideTimePickerBox">
+        <input type="text"
+               placeholder="选择time" 
+               class="header__range-date-time" 
+               v-model="endDateTime"
+               @click="showTimePickerbox('end')">
+    </div>
+
+    <!-- 时间点 不含时分秒 -->
+    <div class="date-picker-day__header" v-show="!isDateRange && !hasTimePicker">
+        <input type="text" 
+               placeholder="选择日期" 
+               class="header__begin-date header__single-date" 
+               v-model="chosenDate">
+    </div>
+    <!-- 时间点 含时分秒 -->
+    <div class="date-picker-day__header" v-show="!isDateRange && hasTimePicker">
+        <input type="text" 
+               placeholder="选择日期" 
+               class="header__begin-date header__single-date-time" 
+               v-model="chosenDate"
+               @focus="hideTimePickerBox">
+        <input type="text"
+               placeholder="选择time" 
+               class="header__begin-date header__single-date-time" 
+               v-model="chosenDateTime"
+               @click="showTimeTable = true">
+    </div>
+    <!-- 时分秒选择器 -->
+    <div class="date-picker-day__time-picker-box" @mousewheel="scrollFobidden" v-show="showTimeTable" :style="styleObj">
+        <ul class="time-picker-box__item" @scroll="timeScroll" id="time-picker-box__item-hour">
+            <li v-for="i in 24" class="item__list-item" :class="{'item__list-item-chosen': i===0}" @click="chooseTime">{{i | filterAddZero}}</li>
+        </ul>
+        <ul class="time-picker-box__item" @scroll="timeScroll" id="time-picker-box__item-minute">
+            <li v-for="i in 60" class="item__list-item" :class="{'item__list-item-chosen': i===0}" @click="chooseTime">{{i | filterAddZero}}</li>
+        </ul>
+        <ul class="time-picker-box__item" @scroll="timeScroll" id="time-picker-box__item-second">
+            <li v-for="i in 60" class="item__list-item" :class="{'item__list-item-chosen': i===0}" @click="chooseTime">{{i | filterAddZero}}</li>
+        </ul>
+    </div>
+
+    <div class="date-picker-day__body">
+        <div class="body__header">
+            <div class="header__year header__item">
+                <span class="item__btn item__left-btn" @click="yearClick(-1)"></span>
+                <span class="item__date">{{viewYear}}年</span>
+                <span class="item__btn item__right-btn" @click="yearClick(1)"></span>
+            </div>
+            <div class="header__month header__item">
+                <span class="item__btn item__left-btn" @click="monthClick(-1)"></span>
+                <span class="item__date">{{viewMonth}}月</span>
+                <span class="item__btn item__right-btn" @click="monthClick(1)"></span>                     
+            </div>
+        </div>
+
+        <div class="body__calendar-wrap">
+            <table>
+                <thead>
+                    <tr class="date-days">
+                        <th v-for="day in days">{{day}}</th>
+                    </tr>
+                </thead>
+                <tbody @mouseleave="leaveDateTable" v-show="isDateRange">
+                    <tr v-for="i in 6">
+                        <td v-for="j in 7" 
+                            :class="{'day-in-month': !date[i * 7 + j].notThisMonth , 'hover-time-range': date[i * 7 + j].isRangeHover, 'unarrive-day': date[i * 7 + j].isUnarriveDay, 'day-out-range' : !date[i*7+j].isInLimitRange ,  'chosen-begin-date': date[i * 7 + j].isChosenBeginDay, 'chosen-end-date': date[i * 7 + j].isChosenEndDay}"
+                            @click="chooseDay(date[i * 7 + j])"
+                            @mouseover="setDateHoverCls(date[i * 7 + j].date)">
+                            {{date[i * 7 + j] && date[i * 7 + j].day}}
+                            <br>
+                            <small v-if="date[i * 7 + j].date.year === todayDate.year && date[i * 7 + j].date.month === todayDate.month && date[i * 7 + j].date.day === todayDate.day" class="today">
+                                今日
+                            </small>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tbody @mouseleave="leaveDateTable" v-show="!isDateRange">
+                    <tr v-for="i in 6">
+                        <td v-for="j in 7" 
+                            :class="{'day-in-month': !date[i * 7 + j].notThisMonth, 'chosen-begin-date': date[i * 7 + j].isChosenBeginDay, 'day-out-range' : !date[i*7+j].isInLimitRange ,}"
+                            @click="chooseDay(date[i * 7 + j])">
+                            {{date[i * 7 + j] && date[i * 7 + j].day}}
+                            <br>
+                            <small v-if="date[i * 7 + j].date.year === todayDate.year && date[i * 7 + j].date.month === todayDate.month && date[i * 7 + j].date.day === todayDate.day" class="today">
+                                今日
+                            </small>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

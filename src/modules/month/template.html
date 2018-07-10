@@ -1,0 +1,27 @@
+<div class="date-picker-month">
+    <div class="date-picker-month__header">
+        <input type="text" 
+               placeholder="选择月" 
+               class="header__date-range" 
+               v-model="yearMonthText"
+               disabled>
+    </div>
+    <div class="date-picker-month__body">
+        <div class="body__header">
+            <div class="header__year header__item">
+                <span class="item__btn item__left-btn" @click="yearClick(-1)"></span>
+                <span class="item__date">{{viewYear}}年</span>
+                <span class="item__btn item__right-btn" @click="yearClick(1)"></span>
+            </div>
+        </div>
+
+        <ul class="body__month-wrap">
+            <li v-for="i in 12" 
+                class="month-wrap__item"
+                :class="{'month-wrap__item-now-year': viewYear === todayDate.year && (i + 1) > todayDate.month, 'month-wrap__item-chosen-month': viewYear === chooseDate.year && (i + 1) === chooseDate.month}"
+                @click="chooseMonth(i)">
+                {{i+1}}
+            </li>
+        </ul>
+    </div>
+</div>

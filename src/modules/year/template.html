@@ -1,0 +1,20 @@
+<div class="date-picker-year">
+    <div class="date-picker-year__header">
+        <input type="text"
+                placeholder="选择年" 
+                class="header__date-range" 
+                v-model="yearText"
+                disabled>
+    </div>
+    <!-- , 'year-wrap__item-unchooseable': item.hasArrive -->
+    <div class="date-picker-year__body">
+        <ul class="body__year-wrap">
+            <li v-for="item in yearList" 
+                class="year-wrap__item"
+                :class="{'year-wrap__item-chosen': item.isSelected}"
+                @click="chooseYear(item.name, $index)">
+                {{item.name}}年
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,115 @@
+.date-picker-week{
+    &__header{
+        text-align: center;
+        border-bottom: 1px solid #DBE0E9;
+        padding: 10px 0;
+        .header{
+            &__date-range{
+                width: 260px;
+            }
+        }
+    }
+
+    &__body{
+        padding: 10px;
+        .body{
+            &__header{
+                display: flex;
+                justify-content: center;
+                .header{
+                    &__item{
+                        margin: 0 20px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        .item{
+                            &__date{
+                                display: inline-block;
+                                width: 58px;
+                                text-align: center;
+                                margin: 0 10px;
+                                font-size: 12px;
+                            }
+                            &__btn{
+                                display: inline-block;
+                                width: 20px;
+                                height: 20px;
+                                cursor: pointer;
+                            }
+                            &__left-btn{
+                                background: url(../../img/left2.png) center center no-repeat;
+                            }
+                            &__right-btn{
+                                background: url(../../img/right2.png) center center no-repeat;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &__calendar-wrap{
+                margin-top: 10px;
+            }
+        }
+    }
+
+    .date-picker-week__body{
+        .item__btn.item__left-btn{
+            &:hover{
+                background: url(../../img/left.png) center center no-repeat;
+            }
+        }
+        .item__btn.item__right-btn{
+            &:hover{
+                background: url(../../img/right.png) center center no-repeat;
+            }
+        }
+    }
+    .body__calendar-wrap{
+        table{
+            width: 100%;
+            // opacity: 0.47;
+            font-size: 12px;
+            color: #aaa;
+            th,td{
+                text-align: center;
+                padding: 10px 0;
+            }
+            td{
+                cursor: pointer;
+                height: 40px;     
+                position: relative;           
+                &.day-in-month{
+                    color: #333;
+                }
+                &:hover{
+                    background: rgba(89,183,91,0.19);
+                }
+                &.hover-day{
+                    background: rgba(89,183,91,0.19);
+                }
+                &.chosen-begin-date,&.chosen-end-date{
+                    background: #59B75B!important;
+                    color: #fff;
+                }
+                &.hover-time-range{
+                    background: rgba(89,183,91,0.19);
+                }
+                .today{
+                    display: inline-block;
+                    transform: scale(0.8);
+                    position: absolute;
+                    width: 100%;
+                    left: -2px;
+                    bottom: 3px;
+                }
+            }
+            thead{
+
+            }
+            tbody{
+
+            }
+        }
+    }
+}

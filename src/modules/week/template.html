@@ -1,0 +1,48 @@
+<div class="date-picker-week">
+    <div class="date-picker-week__header">
+        <input type="text" 
+               placeholder="选择周" 
+               class="header__date-range" 
+               v-model="dateRangeText"
+               disabled>
+    </div>
+
+    <div class="date-picker-week__body">
+        <div class="body__header">
+            <div class="header__year header__item">
+                <span class="item__btn item__left-btn" @click="yearClick(-1)"></span>
+                <span class="item__date">{{viewYear}}年</span>
+                <span class="item__btn item__right-btn" @click="yearClick(1)"></span>
+            </div>
+            <div class="header__month header__item">
+                <span class="item__btn item__left-btn" @click="monthClick(-1)"></span>
+                <span class="item__date">{{viewMonth}}月</span>
+                <span class="item__btn item__right-btn" @click="monthClick(1)"></span>  
+            </div>
+        </div>
+
+        <div class="body__calendar-wrap">
+            <table>
+                <thead>
+                    <tr class="date-days">
+                        <th v-for="day in days">{{day}}</th>
+                    </tr>
+                </thead>
+                <tbody @mouseleave="leaveDateTable">
+                    <tr v-for="i in 6">
+                        <td v-for="j in 7" 
+                            :class="{'day-in-month': !date[i * 7 + j].notThisMonth, 'chosen-begin-date': date[i * 7 + j].isChosenBeginDay, 'chosen-end-date': date[i * 7 + j].isChosenEndDay, 'hover-day': date[i * 7 + j].hasHoverDay, 'hover-time-range': date[i * 7 + j].isChosenRangeHover || date[i * 7 + j].isRangeHover}"
+                            @click="chooseDay(date[i * 7 + j], date[i * 7 + j].index)"
+                            @mouseover="setDateHoverCls(date[i * 7 + j].date, date[i * 7 + j].index)">
+                            {{date[i * 7 + j] && date[i * 7 + j].day}}
+                            <br>
+                            <small v-if="date[i * 7 + j].date.year === todayDate.year && date[i * 7 + j].date.month === todayDate.month && date[i * 7 + j].date.day === todayDate.day" class="today">
+                                今日
+                            </small>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
